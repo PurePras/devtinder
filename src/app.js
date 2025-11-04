@@ -54,31 +54,78 @@ const app = express();
 //     res.send("Response!!");
 // });
 // also use "app.use" in place of get
-app.get("/user",
-    [(req,res,next)=>{
-     console.log("handling the route user!!");
-     next();
-    //  res.send("Response 1!!");
-},
-(req,res,next)=>{
-console.log("handling the route user 2!!");
-next();
-// res.send("Response 2!!");
-}],
-(req,res,next)=>{
-    console.log("handling the route user 3!!");
-    next();
-    // res.send("Response 3!!");
-},
-(req,res,next)=>{
-     console.log("handling the route user 4!!");
-     next();
-    // res.send("response 4 !!");
-},
-(req,res,next)=>{
-    console.log("5th ");
-    res.send("response 5th");
-}
+// 04 nov 2025
+// app.get("/user",
+//     [(req,res,next)=>{
+//      console.log("handling the route user!!");
+//      next();
+//     //  res.send("Response 1!!");
+// },
+// (req,res,next)=>{
+// console.log("handling the route user 2!!");
+// next();
+// // res.send("Response 2!!");
+// }],
+// (req,res,next)=>{
+//     console.log("handling the route user 3!!");
+//     next();
+//     // res.send("Response 3!!");
+// },
+// (req,res,next)=>{
+//      console.log("handling the route user 4!!");
+//      next();
+//     // res.send("response 4 !!");
+// },
+// (req,res,next)=>{
+//     console.log("5th ");
+//     res.send("response 5th");
+// }
+// )
+// middleware chain => request handler
+// app.use("/",
+//     (req,res)=>{
+//         res.send("handling / route");
+//     }
+// )
+// app.get("/user",
+//     (req,res,next)=>{
+//         console.log("Handling response 2");
+//         // res.send("response2");
+//         next();
+//     }
+// )
+// app.get("/user",
+//     (req,res,next)=>{
+//         console.log("handling the /user");
+//         // next();
+//         res.send("response1");
+//         // this is request handler
+//         // all these are function
+//     }
+// ) 
+const {adminAuth,userAuth} = require("./middlewares/auth");
+app.use("/admin",adminAuth);
+app.use("/user",userAuth)
+app.get("/user",userAuth)
+app.get("/admin/getAllData",(req,res)=>{
+    // Logic to check if the requested url is authenticated,request is authorized
+    const token  = "xyz";
+    console.log("admin is getting data checked");
+    const isAdminAuthorized = token === "xyz";
+    if(isAdminAuthorized)
+    {
+        res.send("All Data Sent");
+    }
+    else{
+        res.status(401).send("Unauthorized request");
+    }
+});
+
+app.get("/admin/deleteUser",
+    (req,res)=>{
+         // Logic to check if the requested url is authenticated,request is authorized
+        res.send("Deleted a User");
+    }
 )
 
 app.listen(7777, () => {
