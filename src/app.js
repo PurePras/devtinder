@@ -103,31 +103,41 @@ const app = express();
 //         // all these are function
 //     }
 // ) 
-const {adminAuth,userAuth} = require("./middlewares/auth");
-app.use("/admin",adminAuth);
-app.use("/user",userAuth)
-app.get("/user",userAuth)
-app.get("/admin/getAllData",(req,res)=>{
-    // Logic to check if the requested url is authenticated,request is authorized
-    const token  = "xyz";
-    console.log("admin is getting data checked");
-    const isAdminAuthorized = token === "xyz";
-    if(isAdminAuthorized)
-    {
-        res.send("All Data Sent");
+// const {adminAuth,userAuth} = require("./middlewares/auth");
+// app.use("/admin",adminAuth);
+// app.use("/user",userAuth)
+// app.get("/user",userAuth)
+// app.get("/admin/getAllData",(req,res)=>{
+//     // Logic to check if the requested url is authenticated,request is authorized
+//     const token  = "xyz";
+//     console.log("admin is getting data checked");
+//     const isAdminAuthorized = token === "xyz";
+//     if(isAdminAuthorized)
+//     {
+//         res.send("All Data Sent");
+//     }
+//     else{
+//         res.status(401).send("Unauthorized request");
+//     }
+// });
+
+// app.get("/admin/deleteUser",
+//     (req,res)=>{
+//          // Logic to check if the requested url is authenticated,request is authorized
+//         res.send("Deleted a User");
+//     }
+// )
+app.use("/",(err,req,res,next)=>{
+    if(err){
+        res.status(500).send("something went wrong");
     }
-    else{
-        res.status(401).send("Unauthorized request");
-    }
+}); 
+app.get("/getUserData",(req,res)=>{
+    throw new Error("deklfj");
+    res.send("User Data Sent")
 });
 
-app.get("/admin/deleteUser",
-    (req,res)=>{
-         // Logic to check if the requested url is authenticated,request is authorized
-        res.send("Deleted a User");
-    }
-)
 
 app.listen(7777, () => {
     console.log("PM1 server is successfully listening to port 7777......");
-});
+}); 
